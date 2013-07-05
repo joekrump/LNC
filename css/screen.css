@@ -1,0 +1,198 @@
+/* Stylesheet
+@author Joseph Krump
+@date 07-03-2013
+*/
+
+	/* General Styling */
+ul {
+    padding:0;
+    margin:0 0 20px 0;
+    list-style:none;
+}
+h1, h2 {
+    padding:0;
+    margin:0 0 20px 0;
+    font-weight:normal;
+}
+p {
+    padding:0;
+    margin:0 0 20px 0;
+}
+/*Anchors*/
+a {
+    text-decoration:none;
+    font-size:1.0em;
+    color:#fff;
+    padding:0 0 3px 0;
+}
+a:hover {
+    text-decoration:none;
+    color: white;
+}
+ul li {
+    padding:5px 0;
+}
+ul li input[type="text"], ul li input[type="password"] {
+    width:200px;
+}
+/* Headers */
+h1 {
+    font-size:2.2em;
+}
+h2 {
+    font-size:2.0em;
+}
+.logo {
+    display:block;
+}
+#header-image{
+    width: 800px;
+    margin-left: -20px;
+}
+/* Containers */
+body {
+    /*background:darkslategray;*/
+    background: #535559;
+    font-family:'Droid Sans',Tahoma, Arial, sans-serif; 
+    font-size:1.0em;   
+    color: white;
+}
+/* Menu */
+#top-menu{
+    width: 580px;
+    margin: 0;
+    display: block;
+}
+
+#top-menu li{
+    list-style: none;
+    float:      left;
+    font-size:  1.0em;
+    padding: 18px 14px; /*values might change based on the height of the header*/
+}
+
+#top-menu li:hover{
+    background: rgba(188,188,188, 1.0);
+    color:#fff;
+}
+
+#top-menu li .one_column_layout{
+    width: 200px;
+    margin: 0px;
+    position: absolute;
+    padding-bottom: 0px;
+    display: none;
+    height: 0px;
+    text-align: left;
+}
+
+#top-menu .col_1{
+    width: 130px;
+    float: left;
+    margin: 0;
+    margin-left: 1px;
+    padding-left: 0;    
+}
+
+#top-menu li:hover .one_column_layout {
+    display:block;
+    position: absolute;
+    margin: 0 0 0 -15px;
+    top: 245px;
+    background: rgba(244,244,244,0.3);
+}
+#top-menu .one_column_layout .option{
+    width: 170px;
+    border: none;
+    margin: 0;
+    background: rgba(188,188,188, 1.0);
+    border-bottom: 2px ridge #222;
+    color:black;
+}
+
+#top-menu .one_column_layout .option:hover{
+    background: rgba(188,188,188, 1.0);
+    color: white;
+}
+
+#container, footer {
+    background:rgba(0,0,0,0.4);
+    width:920px;
+    margin:0 auto;
+    padding:20px;
+}
+header {
+    width:940px;
+    padding:10px;
+    margin:0 auto 10px auto;
+}
+#container {
+    min-height:500px;
+    border-radius:5px 5px 0 0;
+    box-shadow: 0 0 25px #222;
+}
+footer {
+    border-radius:0 0 5px 5px;
+    box-shadow: 0 0 25px #222;
+}
+.widget {
+    margin-bottom:20px;
+}
+.widget h2 {
+    margin:0 0 10px 0;
+    padding:0 5px;
+    font-weight:normal;
+    border-bottom:1px solid #ddd;
+}
+.widget .inner {
+    margin:0 10px;
+}
+/* Navigation */
+nav {
+    float:left;
+}
+nav ul {
+    margin:0;
+}
+nav ul li {
+    display:inline;
+    margin-right:10px;
+}
+nav ul li a {
+    text-decoration:none;
+}
+nav ul li.current {
+    font-weight:bold;
+}
+nav ul li a.last {
+    border-right:0;
+}
+/* Aside */
+aside {
+    width:260px;
+    float:right;
+    border-left:1px dashed #aaa;
+    padding-left:15px;
+}
+/* Login */
+#login li.link {
+    margin-top:5px;
+}
+/* Footer */
+footer {
+    border-top:1px dashed #ddd;
+    color:#999;
+}
+/* Misc */
+.clear {
+    clear:both;
+}
+.error-list{
+    color: orange;
+}
+
+.highlight{
+    color:#35a6e6;
+}
+/* CSS Document */
+
