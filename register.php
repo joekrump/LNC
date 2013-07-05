@@ -42,14 +42,8 @@ if(!empty($_POST)){
 			$errors[] = 'This email address is already in use';
 		}
 	}
-}
-
-?>
-<h1>Register</h1>
-
-<?php
-	if(isset($_GET['success']) && empty($_GET['success'])) {
-		echo 'You\'ve been successfully registered!';
+} if(isset($_GET['success']) && empty($_GET['success'])) {
+		echo 'You\'ve been successfully registered. Check your email to activate your account.';
 	} else {
 		//register new user if these are true
 		if(empty($errors) && !empty($_POST)){
@@ -62,16 +56,20 @@ if(!empty($_POST)){
 				'email' => $_POST['email'],
 				'email_code' => md5($_POST['username'] + microtime())//create a unique email code
 			);
-
-			register_user($registration_info);
+			if(isset($_GET['r'])){
+				$referral_code = $_GET['r'];
+				register_referred_user($registration_info, $referral_code);
+			} else {
+				register_user($registration_info);				
+			}
 			header('Location: register.php?success');
-			exit();
-
+			exit;
 		} else if(!empty($errors)){
 			//output errors
 			echo output_errors($errors);
 		}
 ?>
+<h2>Register</h2>
 <form action="" method="post">
 	<ul>
 		<li>

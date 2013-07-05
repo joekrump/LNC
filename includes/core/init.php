@@ -10,7 +10,7 @@ $errors = array();
 
 if(logged_in()){
 	$session_user_id = $_SESSION['user_id'];
-	$user_data = user_data($session_user_id, 'user_id', 'user_name', 'password', 'f_name', 'l_name', 'email');
+	$user_data = user_data($session_user_id, 'user_id', 'user_name', 'password', 'f_name', 'l_name', 'email', 'email_code');
 	if(!user_active($user_data['user_name'])){
 		session_destroy();
 		header('Location: index.php' );

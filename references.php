@@ -3,7 +3,7 @@ include 'includes/core/init.php';
 protect_page();
 include_once('includes/overall/overall_header.php'); 
 ?>
-<h1>Downloads</h1>
+<h1>People who have signed up thanks to you!</h1>
 <?php
 	$referral_info = get_user_referral_signups($user_data['email_code']);
 	foreach($referral_info as $info){
