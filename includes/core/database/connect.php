@@ -1,5 +1,4 @@
 <?php
-mysql_connect('localhost', 'root', '') or die(mysql_error()); //TODO: remove 'or die' section before going live.
-mysql_select_db('login'); //database name is login
-
+mysql_connect('sql5c0d.megasqlservers.com', 'krumpinato929255', 'myplace88'); 
+mysql_select_db('login_krumpinato929255'); //database name 
 ?>

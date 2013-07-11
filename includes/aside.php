@@ -3,7 +3,9 @@
     <?php
     if(logged_in()){
     	include('includes/widgets/loggedin.php');
-    	include('includes/widgets/credit_count.php');
+    	if($user_data['referrals_count'] > 0){
+    		include('includes/widgets/credit_count.php');
+    	}
     } else {
 	    include('includes/widgets/login.php');
 	}
