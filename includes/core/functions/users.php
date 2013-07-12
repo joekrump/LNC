@@ -162,7 +162,7 @@
 	}
 
 	/********************************************************************
-	 * user_exists - Checks to see if a username exists within the 
+	 * email_exists - Checks to see if an email exists within the 
 	 *				 database.
 	 * @param $username - the username that you want to search for. 
 	 * @return - true if the username is found, else false. 
@@ -219,7 +219,7 @@
 	 * @return - the number of active users.
 	 ********************************************************************/
 	function get_active_users(){
-		$query = mysql_query("SELECT COUNT(`user_id`) FROM `users` WHERE `active` = 1");
+		$query = mysql_query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `active` = 1");
 		return mysql_result($query, 0);
 	}
 
@@ -231,5 +231,18 @@
 		$user_id = (int)$user_id;
 
 		mysql_query("UPDATE `users` SET password = '$password' WHERE user_id = $user_id");
+	}
+
+	/********************************************************************
+	 * update_data - Updates the database with new information passed.
+	 ********************************************************************/
+	function update_data($update_data){
+		array_walk($update_data, 'sanitize_array');
+		$id = $_SESSION['user_id'];
+		foreach($update_data as $field => $data){
+			$update[] = '`' . $field . '` = \'' . $data . '\'';
+		}
+
+		mysql_query("UPDATE `users` SET ". implode(', ', $update) . " WHERE `user_id` = '$id'");
 	}
 ?>
