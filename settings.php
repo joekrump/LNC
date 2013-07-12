@@ -3,13 +3,19 @@
 	protect_page();
 	include_once('includes/overall/overall_header.php'); 
 
-	if(!empty($_POST) && (($_POST['f_name'] != $user_data['f_name']) || ($_POST['l_name'] != $user_data['l_name']) || ($_POST['email'] != $user_data['email']))){
+	if(!empty($_POST)){
 
 		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
 			$errors[] = 'A valid email address is required';
 		}
 		if(email_exists($_POST['email']) && ($_POST['email'] != $user_data['email'])){
 			$errors[] = 'This email address is already in use';
+		}
+		if(strlen($_POST['f_name']) > 32){
+			$errors[] = 'You first name can be a maximum of 32 characters.';
+		}
+		if(strlen($_POST['l_name']) > 32){
+			$errors[] = 'You last name can be a maximum of 32 characters.';
 		}
 	}
 ?>
@@ -18,7 +24,7 @@
 if(isset($_GET['success'])){
 	echo 'Your details have been updated!';
 } else {
-	if(!empty($_POST) && empty($errors)){
+	if(!empty($_POST) && empty($errors) && (($_POST['f_name'] != $user_data['f_name']) || ($_POST['l_name'] != $user_data['l_name']) || ($_POST['email'] != $user_data['email']))){
 		$update_data = array(
 			'f_name' => $_POST['f_name'],
 			'l_name' => $_POST['l_name'],
@@ -30,7 +36,7 @@ if(isset($_GET['success'])){
 		exit();
 
 	} else if (!empty($errors)){
-		output_errors($errors);
+		echo output_errors($errors);
 	}
 
 	?>

@@ -17,6 +17,9 @@
     			<li>
     				<a href="register.php">Register</a>
     			</li>
+                <li>
+                    Forgot your <a href="recover.php?mode=username">username</a> or <a href="recover.php?mode=password">password</a>?
+                </li>
     		</ul>
     	</form>
     </div>

@@ -122,9 +122,8 @@
 	 * @return - returns the values for the user's attributes as 
 	 &           an associative array. 
 	 ********************************************************************/
-	function user_data($user_id){
+	function user_data($unique_field){
 		$data = array();
-		$user_id = (int)$user_id;
 
 		$num_args = func_num_args();
 		$args = func_get_args();
@@ -134,7 +133,7 @@
 
 			$fields = '`' . implode('` ,`', $args) . '`';
 			//gets all values for attributes given in fields from db. 
-			$data = mysql_fetch_assoc(mysql_query("SELECT $fields FROM `users` WHERE `user_id` = $user_id"));
+			$data = mysql_fetch_assoc(mysql_query("SELECT $fields FROM `users` WHERE `user_id` = '$unique_field' OR `email` = '$unique_field'"));
 
 			return $data;
 		}
@@ -235,6 +234,8 @@
 
 	/********************************************************************
 	 * update_data - Updates the database with new information passed.
+	 * @param update_data - an array of data for attributes which are to 
+	 *						be updated in the database.
 	 ********************************************************************/
 	function update_data($update_data){
 		array_walk($update_data, 'sanitize_array');
@@ -244,5 +245,27 @@
 		}
 
 		mysql_query("UPDATE `users` SET ". implode(', ', $update) . " WHERE `user_id` = '$id'");
+	}
+
+	/********************************************************************
+	 * recover_info - Sends an email to a user in order for them to
+	 *				  recover either their username, or password.
+	 * @param mode - the type of recover this is. (ie. password)
+	 * @param email - the email that the reovery info is to be sent to.
+	 ********************************************************************/
+	function recover_info($mode, $email){
+		$mode  = sanitize($mode);
+		$email = sanitize($email);
+
+		$user_data = user_data($email, 'user_id', 'f_name', 'user_name');
+		$user_id = $user_data['user_id'];
+
+		if($mode == 'username'){
+			email($email, 'Krumpinator.com Username Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour username is: " . $user_data['user_name'] . "\n\n-Krumpinator.com");
+		} else if($mode == 'password'){
+			$generated_password = substr(md5(rand(999, 999999)), 0, 8);
+			email($email, 'Krumpinator.com Password Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour new password is: " . $generated_password . "\n\n-Krumpinator.com");
+			email();
+		}
 	}
 ?>

@@ -16,11 +16,11 @@ function logged_in_user_redirect(){
 }
 
 function sanitize_array(&$array){
-	$array = mysql_real_escape_string($array);
+	$array = htmlentities(strip_tags(mysql_real_escape_string($array)));
 }
 
 function sanitize($data){
-	return mysql_real_escape_string($data);
+	return htmlentities(strip_tags(mysql_real_escape_string($data)));
 }
 
 function output_errors($errors){

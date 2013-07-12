@@ -33,6 +33,12 @@ if(!empty($_POST)){
 		if(strlen($_POST['username']) < 3){
 			$errors[] = 'Usernames must be at least 3 characters in length.';
 		}
+		if(strlen($_POST['f_name']) > 32){
+			$errors[] = 'You first name can be a maximum of 32 characters.';
+		}
+		if(strlen($_POST['l_name']) > 32){
+			$errors[] = 'You last name can be a maximum of 32 characters.';
+		}
 		//email validation checking rough email address string.
 		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
 			$errors[] = 'A valid email address is required';
