@@ -10,7 +10,7 @@ function protect_page(){
 }
 
 function protect_admin(){
-	if(!is_admin()){
+	if(!has_access(1)){
 		header('Location: index.php');
 		exit();
 	}

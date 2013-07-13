@@ -115,9 +115,9 @@
 			email($registration_info['email'], 'Activate your account', "Hello " . 
 			$registration_info['f_name'] . 
 			",\n\nFollow the link below to activate your account:" . 
-			"\nhttp://krumpinator.com/login/activate.php?c=". $registration_info['email_code'] . 
+			"\nhttp://krumpinator.com/LNC/activate.php?c=". $registration_info['email_code'] . 
 			"\n\nGet credit for users who signup through your own personal link: \n" . 
-			"http://krumpinator.com/login/register.php?r=" . $registration_info['email_code'] . 
+			"http://krumpinator.com/LNC/register.php?r=" . $registration_info['email_code'] . 
 			"\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
 		}
 	}
@@ -293,12 +293,12 @@
 	}
 
 	/********************************************************************
-	* recover_info - Checks to see if a user is an administrator
-	* @param acct_type - the account type of the user.
+	* has_access - Checks to see if a user account is of a specified type.
+	* @param acct_type - the account type to check against.
 	* @return true if the user is an admin, otherwise, returns false.
 	********************************************************************/
-	function is_admin(){
+	function has_access($acct_type){
 		global $user_data;
-		return ($user_data['a_type'] == 1) ? true : false;
+		return ($user_data['a_type'] == $type) ? true : false;
 	}
 ?>
