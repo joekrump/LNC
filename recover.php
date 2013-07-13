@@ -6,9 +6,9 @@ include_once('includes/overall/overall_header.php');
 
 <h1>Recover</h1>
 <?php
-if(isset($_GET['success']) && !empty($_GET['success'])){
+if(isset($_GET['success'])){
 ?>
-	<p>We've emailed you your new password.</p>
+	<p>Check your email for the information you requested.</p>
 <?php
 } else {
 	$modes = array('password', 'username');
@@ -16,7 +16,7 @@ if(isset($_GET['success']) && !empty($_GET['success'])){
 		if(isset($_POST['email']) && !empty($_POST['email'])){
 			if(email_exists($_POST['email'])){
 				recover_info($_GET['mode'], $_POST['email']);
-				//header('Location: recover.php?success');
+				header('Location: recover.php?success');
 			} else {
 				echo '<p>Oops, that isn\'t an email address that is registered with us!';
 			}

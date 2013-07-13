@@ -113,7 +113,7 @@
 
 		mysql_query("INSERT INTO `users` ($fields) VALUES ($data)");
 		//send an email to the new user to activate their account. email function is found in general.php
-		email($registration_info['email'], 'Activate your account', "Hello " . $registration_info['f_name'] . ",\n\n Follow the link below to activate your account: http://krumpinator.com/login/activate.php?c=". $registration_info['email_code'] ."&r=" . $referral_code . "\n\nGet credit for users who signup through your own personal link: http://krumpinator.com/login/register.php?r=" . $registration_info['email_code'] ."\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
+		email($registration_info['email'], 'Activate your account', "Hello " . $registration_info['f_name'] . ",\n\n Follow the link below to activate your account: http://krumpinator.com/LNC/activate.php?c=". $registration_info['email_code'] ."&r=" . $referral_code . "\n\nGet credit for users who signup through your own personal link: http://krumpinator.com/LNC/register.php?r=" . $registration_info['email_code'] ."\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
 	}
 
 	/********************************************************************
@@ -264,8 +264,8 @@
 			email($email, 'Krumpinator.com Username Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour username is: " . $user_data['user_name'] . "\n\n-Krumpinator.com");
 		} else if($mode == 'password'){
 			$generated_password = substr(md5(rand(999, 999999)), 0, 8);
-			email($email, 'Krumpinator.com Password Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour new password is: " . $generated_password . "\n\n-Krumpinator.com");
-			email();
+			email($email, 'Krumpinator.com Password Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour new password is: " . $generated_password . "\nWe recommend that once you login you go to \"Change Password\" and update your password to something more memorable.\n\n-Krumpinator.com");
+			change_password($user_id, $generated_password);
 		}
 	}
 ?>
