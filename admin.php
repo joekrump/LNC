@@ -1,6 +1,7 @@
 <?php 
 	include_once 'includes/core/init.php';
 	protect_page();
+	protect_admin();
 	include_once 'includes/overall/overall_header.php'; 
 ?>
 

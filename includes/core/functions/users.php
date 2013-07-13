@@ -268,4 +268,14 @@
 			change_password($user_id, $generated_password);
 		}
 	}
+
+	/********************************************************************
+	 * recover_info - Checks to see if a user is an administrator
+	 * @param acct_type - the account type of the user.
+	 * @return true if the user is an admin, otherwise, returns false.
+	 ********************************************************************/
+	function is_admin(){
+		global $user_data;
+		return ($user_data['a_type'] == 1) ? true : false;
+	}
 ?>

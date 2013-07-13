@@ -9,6 +9,13 @@ function protect_page(){
 	}
 }
 
+function protect_admin(){
+	if(!is_admin()){
+		header('Location: index.php');
+		exit();
+	}
+}
+
 function logged_in_user_redirect(){
 	if(logged_in()){
 		header('Location: index.php');
