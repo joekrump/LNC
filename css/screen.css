@@ -246,6 +246,14 @@ footer {
     overflow-y: scroll;
 }
 
+.chat .message a{
+    color: slategrey;
+}
+
+.chat .message {
+    margin: 5px 0;
+}
+
 .chat .entry {
     width: 260px;
     height: 40px;

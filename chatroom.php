@@ -14,8 +14,7 @@ if(!isset($_GET['mode']) || ($_GET['mode'] != $user_data['email_code'])){
 <div class="chat">
 	<div class="messages">
 		<div class="message">
-			<a href="">Username says:</a>
-			<p>Message placeholder.</p>
+			<!--AJAX content will go here -->
 		</div>
 	</div>
 	<textarea class="entry" placeholder="Hit Enter to send message or Shift+Enter for a newline."></textarea>
