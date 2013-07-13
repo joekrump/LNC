@@ -2,7 +2,10 @@
 @author Joseph Krump
 @date 07-03-2013
 */
+/*
+Color Palet:
 
+*/
 	/* General Styling */
 ul {
     padding:0;
@@ -22,12 +25,12 @@ p {
 a {
     text-decoration:none;
     font-size:1.0em;
-    color:#fff;
+    color:#35a6e6;
     padding:0 0 3px 0;
 }
 a:hover {
     text-decoration:none;
-    color: white;
+    color: orange;
 }
 ul li {
     padding:5px 0;
@@ -63,7 +66,9 @@ body {
     margin: 0;
     display: block;
 }
-
+#top-menu a{
+    color: #fff;
+}
 #top-menu li{
     list-style: none;
     float:      left;
@@ -194,5 +199,42 @@ footer {
 .highlight{
     color:#35a6e6;
 }
-/* CSS Document */
 
+.profile {
+    color: black;
+    margin-bottom: 20px;
+}
+
+.profile img{
+    height: 150px;
+}
+
+.profile img:hover {
+
+}
+
+.button {
+    background: #363636; 
+    color: white; padding: 5px; 
+    cursor: pointer; 
+    text-align: center; 
+    border: 2px solid gray;
+    font-size: 0.9em;
+}
+.button:hover {
+    border-color: white;
+    color: #fff;
+}
+
+#public_profile{
+    position: relative;
+    width: 640px;
+}
+#public_profile img{
+    width: 50%;
+    float: left;
+    vertical-align: top;
+    margin-right: 10px;
+}
+
+/* CSS Document */

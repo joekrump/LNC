@@ -8,8 +8,17 @@
 			$user_id = user_id_from_username($username);
 			$profile_data = user_data($user_id, 'f_name', 'l_name', 'email');
 ?>
-<h1><?php echo $profile_data['f_name']?>'s Profile</h1>
-<p>Preferred Email: <?php echo $profile_data['email']?></p>
+<div id="public_profile">
+	<h1><?php echo $profile_data['f_name']?>'s Profile</h1>
+	<?php
+		if(!empty($user_data['profile_pic'])){
+			echo '<img src="' . $user_data['profile_pic'] . '" alt="' . $user_data['f_name'] . '"/>';
+		}
+	?>
+	<h3>Details:</h3>
+	Preferred Email: <?php echo $profile_data['email']?>
+</div>
+
 <?php
 		} else {
 			echo "Sorry the doesn't seem to be an account with the username " . $username;

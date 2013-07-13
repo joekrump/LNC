@@ -14,7 +14,7 @@
 	********************************************************************/
 	function get_user_referral_signups($referral_code){
 		$referral_code = sanitize($referral_code);
-		$query = mysql_query("SELECT `f_name`, `l_name`, `email`, `referral_id`, `type`
+		$query = mysql_query("SELECT `f_name`, `l_name`, `email`, `referral_id`
 		 FROM `users` u JOIN `referrals` r
 		  ON u.email_code = r.new_email_code
 		   WHERE `referral_code` = '$referral_code'
@@ -300,5 +300,20 @@
 	function has_access($acct_type){
 		global $user_data;
 		return ($user_data['a_type'] == $type) ? true : false;
+	}
+
+	/********************************************************************
+	* update_profile_imgage - Checks to see if a user account is of a specified type.
+	* @param 
+	* @param
+	* @param
+	********************************************************************/
+	function update_profile_image($user_id, $file_temp, $file_ext){
+		$file_path = 'assets/images/profile/' . substr(md5(time()), 0, 10) . '.' . $file_ext;
+		$file_path = sanitize($file_path);
+		$user_id = (int)$user_id;
+		
+		move_uploaded_file($file_temp, $file_path);
+		mysql_query("UPDATE `users` SET `profile_pic` = '$file_path' WHERE `user_id` = $user_id");
 	}
 ?>
