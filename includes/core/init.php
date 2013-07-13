@@ -1,6 +1,6 @@
 <?php
 session_start();
-//error_reporting(E_ALL);
+error_reporting(E_ALL);
 
 require 'database/connect.php';
 require 'functions/users.php';
@@ -18,6 +18,7 @@ if(logged_in()){
 		session_destroy();
 		header('Location: index.php' );
 		exit();
-	}
+	} 
+	change_user_loggedin_status($session_user_id, 1);
 }
 ?>

@@ -237,4 +237,20 @@ footer {
     margin-right: 10px;
 }
 
+/*Chat styling*/
+
+.chat .messages {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid white;
+    overflow-y: scroll;
+}
+
+.chat .entry {
+    width: 260px;
+    height: 40px;
+    padding: 5px;
+    margin-top: 5px;
+    font: 1em Arial;
+}
 /* CSS Document */

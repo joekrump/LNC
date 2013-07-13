@@ -11,11 +11,14 @@
 				</div>
 			</div>
 		</li>-->
-		<?php if(logged_in()){?>
-		<a href="references.php"><li>References</li></a>
-		<?php }?>
-		<!--<a href="downloads.php"><li>Downloads</li></a>-->
-		<a href="forum.php"><li>Forum</li></a>
+		<?php 
+			if(logged_in()){ 
+		?>
+				<a href="references.php"><li>References</li></a>
+				<a href="chatroom.php?mode=<?php echo $user_data['email_code']; ?>"><li>Chat</li></a> 
+		<?php	}
+		?>
+		<!--<a href="downloads.php"><li>Downloads</li></a>-->		
 		<a href="contact.php"><li>Contact Us</li></a>
 	</ul>
 </nav>

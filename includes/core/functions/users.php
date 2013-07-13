@@ -234,9 +234,10 @@
 	}
 
 	/********************************************************************
-	* change_password - Changes the password for a specified user.
-	* @param user_id - the id for the user that wants their password 
-	*                  changed.
+	* change_password  - Changes the password for a specified user.
+	*
+	* @param user_id   - the id for the user that wants their password 
+	*                    changed.
 	* @param $password - the new value for the user's password 
 	*                    (plain text)
 	********************************************************************/
@@ -249,6 +250,7 @@
 
 	/********************************************************************
 	* update_data - Updates the database with new information passed.
+	*
 	* @param update_data - an array of data for attributes which are to 
 	*						be updated in the database.
 	********************************************************************/
@@ -264,8 +266,9 @@
 
 	/********************************************************************
 	* recover_info - Sends an email to a user in order for them to
-	*				  recover either their username, or password.
-	* @param mode - the type of recover this is. (ie. password)
+	*				 recover either their username, or password.
+	*
+	* @param mode  - the type of recover this is. (ie. password)
 	* @param email - the email that the reovery info is to be sent to.
 	********************************************************************/
 	function recover_info($mode, $email){
@@ -294,8 +297,9 @@
 
 	/********************************************************************
 	* has_access - Checks to see if a user account is of a specified type.
+	*
 	* @param acct_type - the account type to check against.
-	* @return true if the user is an admin, otherwise, returns false.
+	* @return - true if the user is an admin, otherwise, returns false.
 	********************************************************************/
 	function has_access($acct_type){
 		global $user_data;
@@ -303,10 +307,11 @@
 	}
 
 	/********************************************************************
-	* update_profile_imgage - Checks to see if a user account is of a specified type.
-	* @param 
-	* @param
-	* @param
+	* update_profile_image - Updates the profile picture for a user.
+	*					     
+	* @param user_id - the id of the user updating their image.
+	* @param file_temp - the temporary location of the uploaded file.
+	* @param file_ext - the file extension (ie. jpg, png)
 	********************************************************************/
 	function update_profile_image($user_id, $file_temp, $file_ext){
 		$file_path = 'assets/images/profile/' . substr(md5(time()), 0, 10) . '.' . $file_ext;
@@ -315,5 +320,18 @@
 		
 		move_uploaded_file($file_temp, $file_path);
 		mysql_query("UPDATE `users` SET `profile_pic` = '$file_path' WHERE `user_id` = $user_id");
+	}
+
+	/********************************************************************
+	* change_user_loggedin_status - Updates user's loggedin status to 
+	*                               0 or 1. (true or false)
+	*
+	* @param user_id -
+	* @param status_val - 
+	********************************************************************/
+	function change_user_loggedin_status($user_id, $status_val) {
+		$user_id = (int)$user_id;
+		$status_val = (int)$status_val;
+		mysql_query("UPDATE `users` SET `loggedin` = $status_val WHERE `user_id` = $user_id");
 	}
 ?>
