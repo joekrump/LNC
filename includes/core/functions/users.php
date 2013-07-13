@@ -6,6 +6,12 @@
 	 * @author Joseph Krump
 	 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+	/********************************************************************
+	* store_referral_info - stores info on who signed up thanks to a 
+	* specific referral.
+	* @param user_id - id of the user you want to get the credits for.
+	* @return - The number of credits a user currently has.
+	********************************************************************/
 	function get_user_referral_signups($referral_code){
 		$referral_code = sanitize($referral_code);
 		$query = mysql_query("SELECT `f_name`, `l_name`, `email`, `referral_id`, `type`
@@ -25,32 +31,32 @@
 	}
 
 	/********************************************************************
-	 * store_referral_info - stores info on who signed up thanks to a 
-	 * specific referral.
-	 * @param user_id - id of the user you want to get the credits for.
-	 * @return - The number of credits a user currently has.
-	 ********************************************************************/
+	* store_referral_info - stores info on who signed up thanks to a 
+	* specific referral.
+	* @param user_id - id of the user you want to get the credits for.
+	* @return - The number of credits a user currently has.
+	********************************************************************/
 	function store_referral_info($referral_code, $new_email_code){
 		mysql_query("INSERT INTO `referrals` (`referral_code`, `new_email_code`) VALUES ('$referral_code', '$new_email_code')");
 	}
 
 	/********************************************************************
-	 * get_user_credits - retrieve the number of credits a user has. 
-	 * @param user_id - id of the user you want to get the credits for.
-	 * @return - The number of credits a user currently has.
-	 ********************************************************************/
+	* get_user_credits - retrieve the number of credits a user has. 
+	* @param user_id - id of the user you want to get the credits for.
+	* @return - The number of credits a user currently has.
+	********************************************************************/
 	function get_user_credits($user_id){
 		$query = mysql_query("SELECT `referrals_count` FROM `users` WHERE `user_id` = '$user_id'");
 		return mysql_result($query, 0);
 	}
 
 	/********************************************************************
-	 * activate - Gets data attributes for a user from the database. 
-	 * @param email_code - a unique code given to a user when they 
-	 *					   first register.
-	 * @return - true if the account was successfully activated, otherwise
-	 *			 returns false. 
-	 ********************************************************************/
+	* activate - Gets data attributes for a user from the database. 
+	* @param email_code - a unique code given to a user when they 
+	*					   first register.
+	* @return - true if the account was successfully activated, otherwise
+	*			 returns false. 
+	********************************************************************/
 	function credit_account($email_code){
 		$query = mysql_query("SELECT `referrals_count` FROM `users` WHERE `email_code` = '$email_code'");
 		$current_count = mysql_result($query, 0);
@@ -59,13 +65,13 @@
 	}
 
 	/********************************************************************
-	 * activate - Sets a previously 'inactive' user's account to 'active' 
-	 *            if passed a valid $email_code
-	 * @param email_code - a unique code given to a user when they 
-	 *					   first register.
-	 * @return - true if the account was successfully activated, otherwise
-	 *			 returns false. 
-	 ********************************************************************/
+	* activate - Sets a previously 'inactive' user's account to 'active' 
+	*            if passed a valid $email_code
+	* @param email_code - a unique code given to a user when they 
+	*					   first register.
+	* @return - true if the account was successfully activated, otherwise
+	*			 returns false. 
+	********************************************************************/
 	function activate($email_code){
 		$email_code = mysql_real_escape_string($email_code);
 		$query = mysql_query("SELECT COUNT(`user_id`) FROM `users` WHERE `email_code` = '$email_code' AND `active` = 0");
@@ -79,13 +85,17 @@
 	}
 
 	/********************************************************************
-	 * register_user - Sends out an email to the user to activate their 
-	 *				   account. 
-	 * @param registration_info - an assoc array of data required to 
-	 *							  register a new user.
-	 * 
-	 ********************************************************************/
-	function register_user($registration_info){
+	* register_user - Registers a user in the database.
+	* @param registration_info - an assoc array of data required to 
+	*							 register a new user.
+	* @param referral_code - a unique referral code associate with 
+	*					     the account of the person who referred them.
+	*                        NOTE: if user was not referred, set value 
+	*                              to zero.
+	* @return - returns the values for the user's attributes as 
+	*           an associative array. 
+	********************************************************************/
+	function register_user($registration_info, $referral_code){
 		array_walk($registration_info, 'sanitize_array');
 		$registration_info['password'] = md5($registration_info['password']);
 
@@ -93,35 +103,31 @@
 		$data = '\'' . implode('\',\'', $registration_info) . '\'';
 
 		mysql_query("INSERT INTO `users` ($fields) VALUES ($data)");
-		//send an email to the new user to activate their account. email function is found in general.php
-		email($registration_info['email'], 'Activate your account', "Hello " . $registration_info['f_name'] . ",\n\nFollow the link below to activate your account: http://krumpinator.com/login/activate.php?c=". $registration_info['email_code'] ."\n\nGet credit for users who signup through your own personal link: http://krumpinator.com/login/register.php?r=" . $registration_info['email_code'] ."\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
+		if($referral_code != 0){
+			//send an email to the new user to activate their account. email function is found in general.php
+			email($registration_info['email'], 'Activate your account', "Hello " . $registration_info['f_name'] . 
+			",\n\n Follow the link below to activate your account:" . 
+			"\nhttp://krumpinator.com/LNC/activate.php?c=". $registration_info['email_code'] . "&r=" . $referral_code . 
+			"\n\nGet credit for users who signup through your own personal link: " .
+			"\nhttp://krumpinator.com/LNC/register.php?r=" . $registration_info['email_code'] .
+			"\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
+		} else {
+			email($registration_info['email'], 'Activate your account', "Hello " . 
+			$registration_info['f_name'] . 
+			",\n\nFollow the link below to activate your account:" . 
+			"\nhttp://krumpinator.com/login/activate.php?c=". $registration_info['email_code'] . 
+			"\n\nGet credit for users who signup through your own personal link: \n" . 
+			"http://krumpinator.com/login/register.php?r=" . $registration_info['email_code'] . 
+			"\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
+		}
 	}
 
 	/********************************************************************
-	 * register_referred_user - Gets data attributes for a user from the database. 
-	 * @param registration_info - an assoc array of data required to 
-	 *							  register a new user.
-	 * @return - returns the values for the user's attributes as 
-	 &           an associative array. 
-	 ********************************************************************/
-	function register_referred_user($registration_info, $referral_code){
-		array_walk($registration_info, 'sanitize_array');
-		$registration_info['password'] = md5($registration_info['password']);
-
-		$fields = '' . implode(' ,', array_keys($registration_info)) . '';
-		$data = '\'' . implode('\',\'', $registration_info) . '\'';
-
-		mysql_query("INSERT INTO `users` ($fields) VALUES ($data)");
-		//send an email to the new user to activate their account. email function is found in general.php
-		email($registration_info['email'], 'Activate your account', "Hello " . $registration_info['f_name'] . ",\n\n Follow the link below to activate your account: http://krumpinator.com/LNC/activate.php?c=". $registration_info['email_code'] ."&r=" . $referral_code . "\n\nGet credit for users who signup through your own personal link: http://krumpinator.com/LNC/register.php?r=" . $registration_info['email_code'] ."\n\n- Krumpinator.com"); //TODO: set to an appropriate name.
-	}
-
-	/********************************************************************
-	 * user_data - Gets data attributes for a user from the database. 
-	 * @param user_id - the attributes to be retrieved from the database.
-	 * @return - returns the values for the user's attributes as 
-	 &           an associative array. 
-	 ********************************************************************/
+	* user_data - Gets data attributes for a user from the database. 
+	* @param user_id - the attributes to be retrieved from the database.
+	* @return - returns the values for the user's attributes as 
+	*           an associative array. 
+	*******************************************************************/
 	function user_data($unique_field){
 		$data = array();
 
@@ -133,27 +139,31 @@
 
 			$fields = '`' . implode('` ,`', $args) . '`';
 			//gets all values for attributes given in fields from db. 
-			$data = mysql_fetch_assoc(mysql_query("SELECT $fields FROM `users` WHERE `user_id` = '$unique_field' OR `email` = '$unique_field'"));
-
+			$data = mysql_fetch_assoc(
+				mysql_query("SELECT $fields 
+					FROM `users` 
+					WHERE `user_id` = '$unique_field' 
+					OR `email` = '$unique_field'")
+			);
 			return $data;
 		}
 	}
 
 	/********************************************************************
-	 * logged_in - Checks to see if a user is logged in by checking 
-	 *			   $_SESSION 
-	 * @return - true if the user is logged in, else false. 
-	 ********************************************************************/
+	* logged_in - Checks to see if a user is logged in by checking 
+	*			   $_SESSION 
+	* @return - true if the user is logged in, else false. 
+	********************************************************************/
 	function logged_in(){
 		return (isset($_SESSION['user_id'])) ? true : false;
 	}
 
 	/********************************************************************
-	 * user_exists - Checks to see if a username exists within the 
-	 *				 database.
-	 * @param $username - the username that you want to search for. 
-	 * @return - true if the username is found, else false. 
-	 ********************************************************************/
+	* user_exists - Checks to see if a username exists within the 
+	*				 database.
+	* @param $username - the username that you want to search for. 
+	* @return - true if the username is found, else false. 
+	********************************************************************/
 	function user_exists($username){
 		$username = sanitize($username);
 		$query = mysql_query("SELECT COUNT(`user_id`) FROM `users` WHERE `user_name` = '$username'");
@@ -161,11 +171,11 @@
 	}
 
 	/********************************************************************
-	 * email_exists - Checks to see if an email exists within the 
-	 *				 database.
-	 * @param $username - the username that you want to search for. 
-	 * @return - true if the username is found, else false. 
-	 ********************************************************************/
+	* email_exists - Checks to see if an email exists within the 
+	*				 database.
+	* @param $username - the username that you want to search for. 
+	* @return - true if the username is found, else false. 
+	********************************************************************/
 	function email_exists($email){
 		$email = sanitize($email);
 		$query = mysql_query("SELECT COUNT(`user_id`) FROM `users` WHERE `email` = '$email'");
@@ -173,11 +183,11 @@
 	}
 
 	/********************************************************************
-	 * user_active - Checks to see if a user is marked as active.
-	 * @param $username - the username for the account that is being
-	 *					  verified as active or not. 
-	 * @return - true if the user is active, else, false.
-	 ********************************************************************/
+	* user_active - Checks to see if a user is marked as active.
+	* @param $username - the username for the account that is being
+	*					  verified as active or not. 
+	* @return - true if the user is active, else, false.
+	********************************************************************/
 	function user_active($username){
 		$username = sanitize($username);
 		$query = mysql_query("SELECT COUNT(`user_id`) FROM `users` WHERE `user_name` = '$username' AND `active` = 1");
@@ -185,11 +195,11 @@
 	}
 
 	/********************************************************************
-	 * user_id_from_username - gets the user_id for corresponding to the
-	 *						   username that was given.
-	 * @param $username - the username corresponding to the user_id desired.
-	 * @return - true if the user is logged in, else false. 
-	 ********************************************************************/
+	* user_id_from_username - gets the user_id for corresponding to the
+	*						   username that was given.
+	* @param $username - the username corresponding to the user_id desired.
+	* @return - true if the user is logged in, else false. 
+	********************************************************************/
 	function user_id_from_username($username){
 		$username = sanitize($username);
 		$query = mysql_query("SELECT `user_id` FROM `users` WHERE `user_name` = '$username'");
@@ -197,12 +207,13 @@
 	}
 
 	/********************************************************************
-	 * login - Tries to log a user in by checking if $password and 
-	 *		   $username values match a combination in the database. 
-	 * @param $username - the username given at the login request.
-	 * @param $password - the password given at the lgoin request. 
-	 * @return - the user_id for the user if login was succesfull, else false.
-	 ********************************************************************/
+	* login - Tries to log a user in by checking if $password and 
+	*		   $username values match a combination in the database. 
+	* @param $username - the username given at the login request.
+	* @param $password - the password given at the lgoin request. 
+	* @return - the user_id for the user if login was succesfull, else 
+	*           false.
+	********************************************************************/
 	function login($username, $password){
 
 		$username = sanitize($username);
@@ -213,18 +224,22 @@
 	}
 
 	/********************************************************************
-	 * get_active_users - Return the number of users in the database 
-	 *                    that are marked as active 
-	 * @return - the number of active users.
-	 ********************************************************************/
+	* get_active_users - Return the number of users in the database 
+	*                    that are marked as active 
+	* @return - the number of active users.
+	********************************************************************/
 	function get_active_users(){
 		$query = mysql_query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `active` = 1");
 		return mysql_result($query, 0);
 	}
 
 	/********************************************************************
-	 * change_password - Changes the password for a specified user.
-	 ********************************************************************/
+	* change_password - Changes the password for a specified user.
+	* @param user_id - the id for the user that wants their password 
+	*                  changed.
+	* @param $password - the new value for the user's password 
+	*                    (plain text)
+	********************************************************************/
 	function change_password($user_id, $password){
 		$password = md5($password);
 		$user_id = (int)$user_id;
@@ -233,10 +248,10 @@
 	}
 
 	/********************************************************************
-	 * update_data - Updates the database with new information passed.
-	 * @param update_data - an array of data for attributes which are to 
-	 *						be updated in the database.
-	 ********************************************************************/
+	* update_data - Updates the database with new information passed.
+	* @param update_data - an array of data for attributes which are to 
+	*						be updated in the database.
+	********************************************************************/
 	function update_data($update_data){
 		array_walk($update_data, 'sanitize_array');
 		$id = $_SESSION['user_id'];
@@ -248,32 +263,40 @@
 	}
 
 	/********************************************************************
-	 * recover_info - Sends an email to a user in order for them to
-	 *				  recover either their username, or password.
-	 * @param mode - the type of recover this is. (ie. password)
-	 * @param email - the email that the reovery info is to be sent to.
-	 ********************************************************************/
+	* recover_info - Sends an email to a user in order for them to
+	*				  recover either their username, or password.
+	* @param mode - the type of recover this is. (ie. password)
+	* @param email - the email that the reovery info is to be sent to.
+	********************************************************************/
 	function recover_info($mode, $email){
 		$mode  = sanitize($mode);
 		$email = sanitize($email);
 
 		$user_data = user_data($email, 'user_id', 'f_name', 'user_name');
 		$user_id = $user_data['user_id'];
-
+		//send an email for recovering the user's username.
 		if($mode == 'username'){
-			email($email, 'Krumpinator.com Username Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour username is: " . $user_data['user_name'] . "\n\n-Krumpinator.com");
+			email($email, 'Krumpinator.com Username Recovery', "Hello " . 
+				$user_data['f_name'] . 
+				",\n\nYour username is: " . 
+				$user_data['user_name'] . "\n\n-Krumpinator.com");
+		//send an email for recovering the user's password.
 		} else if($mode == 'password'){
-			$generated_password = substr(md5(rand(999, 999999)), 0, 8);
-			email($email, 'Krumpinator.com Password Recovery', "Hello " . $user_data['f_name'] . ",\n\nYour new password is: " . $generated_password . "\nWe recommend that once you login you go to \"Change Password\" and update your password to something more memorable.\n\n-Krumpinator.com");
+			$generated_password = substr(md5(rand(999, 999999)), 0, 8); //generate a new password.
+			email($email, 'Krumpinator.com Password Recovery', "Hello " . 
+				$user_data['f_name'] . ",\n\nYour new password is: " . 
+				$generated_password . 
+				"\nWe recommend that once you login you go to \"Change Password\"" . 
+				" and update your password to something more memorable.\n\n-Krumpinator.com");
 			change_password($user_id, $generated_password);
 		}
 	}
 
 	/********************************************************************
-	 * recover_info - Checks to see if a user is an administrator
-	 * @param acct_type - the account type of the user.
-	 * @return true if the user is an admin, otherwise, returns false.
-	 ********************************************************************/
+	* recover_info - Checks to see if a user is an administrator
+	* @param acct_type - the account type of the user.
+	* @return true if the user is an admin, otherwise, returns false.
+	********************************************************************/
 	function is_admin(){
 		global $user_data;
 		return ($user_data['a_type'] == 1) ? true : false;

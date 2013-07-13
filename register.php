@@ -64,9 +64,9 @@ if(!empty($_POST)){
 			);
 			if(isset($_GET['r'])){
 				$referral_code = $_GET['r'];
-				register_referred_user($registration_info, $referral_code);
+				register_user($registration_info, $referral_code);
 			} else {
-				register_user($registration_info);				
+				register_user($registration_info, 0);				
 			}
 			header('Location: register.php?success');
 			exit;
