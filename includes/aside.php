@@ -1,7 +1,7 @@
 
 <aside id="right_widget">
     <?php
-    if(logged_in()){
+    if($user->logged_in()){
     	include('includes/widgets/loggedin.php');
     	if($user_data['referrals_count'] > 0){
     		include('includes/widgets/credit_count.php');

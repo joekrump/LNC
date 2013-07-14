@@ -1,5 +1,6 @@
 <?php 
 include 'includes/core/init.php';
+require 'includes/core/functions/chat.php';
 protect_page();
 include_once('includes/overall/overall_header.php'); 
 //check to make sure that the user can only access their own chat page.
@@ -7,7 +8,8 @@ if(!isset($_GET['mode']) || ($_GET['mode'] != $user_data['email_code'])){
 	header('Location: index.php');
 	exit();
 } else {
-	
+	$chat = new Chat();
+	print_r($chat->fetchMessages());
 ?>
 <h1>Chat</h1> 
 

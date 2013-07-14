@@ -1,24 +1,28 @@
 <?php
 //general.php - contains general use utility funcitons
 //@author Joseph Krump
+require 'User.php';
 
 //Redirects users to a page with a message if they try to access a members page while not logged in.
 function protect_page(){
-	if(!logged_in()){
+	$user = new User();
+	if(!$user->logged_in()){
 		header("Location: signup-to-view-this.php");
 		exit();
 	}
 }
 //Checks to see if a user is of a_type 1 (admin). If not, redirects them to index.
 function protect_admin(){
-	if(!has_access(1)){
+	$user = new User();
+	if(!$user->has_access(1)){
 		header('Location: index.php');
 		exit();
 	}
 }
 //Redirects user to index if they try to access a page while logged in that they shouldn't
 function logged_in_user_redirect(){
-	if(logged_in()){
+	$user = new User();
+	if($user->logged_in($_SESSION)){
 		header('Location: index.php');
 	}
 }

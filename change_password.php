@@ -29,7 +29,7 @@
 	} else {
 		if(empty($errors) && !empty($_POST)){
 			//change password
-			change_password($session_user_id, $_POST['confirmed_pass']);
+			$user->change_password($session_user_id, $_POST['confirmed_pass']);
 			header('Location: change_password.php?success');		
 		} else if(!empty($errors)){
 			//output errors

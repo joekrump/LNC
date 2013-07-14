@@ -14,8 +14,8 @@ if(isset($_GET['success'])){
 	$modes = array('password', 'username');
 	if(isset($_GET['mode']) && in_array($_GET['mode'], $modes)){
 		if(isset($_POST['email']) && !empty($_POST['email'])){
-			if(email_exists($_POST['email'])){
-				recover_info($_GET['mode'], $_POST['email']);
+			if($user->email_exists($_POST['email'])){
+				$user->recover_info($_GET['mode'], $_POST['email']);
 				header('Location: recover.php?success');
 			} else {
 				echo '<p>Oops, that isn\'t an email address that is registered with us!';

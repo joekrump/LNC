@@ -8,7 +8,7 @@
 		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
 			$errors[] = 'A valid email address is required';
 		}
-		if(email_exists($_POST['email']) && ($_POST['email'] != $user_data['email'])){
+		if($user->email_exists($_POST['email']) && ($_POST['email'] != $user_data['email'])){
 			$errors[] = 'This email address is already in use';
 		}
 		if(strlen($_POST['f_name']) > 32){
@@ -31,7 +31,7 @@ if(isset($_GET['success'])){
 			'email' => $_POST['email']
 		);
 
-		update_data($update_data);
+		$user->update_data($update_data);
 		header('Location: settings.php?success');
 		exit();
 

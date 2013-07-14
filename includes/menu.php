@@ -12,7 +12,7 @@
 			</div>
 		</li>-->
 		<?php 
-			if(logged_in()){ 
+			if($user->logged_in()){ 
 		?>
 				<a href="references.php"><li>References</li></a>
 				<a href="chatroom.php?mode=<?php echo $user_data['email_code']; ?>"><li>Chat</li></a> 

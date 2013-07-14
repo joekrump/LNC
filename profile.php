@@ -4,9 +4,9 @@
 
 	if(isset($_GET['username']) && !empty($_GET['username'])){
 		$username = $_GET['username'];
-		if(user_exists($username)){
-			$user_id = user_id_from_username($username);
-			$profile_data = user_data($user_id, 'f_name', 'l_name', 'email');
+		if($user->user_exists($username)){
+			$user_id = $user->user_id_from_username($username);
+			$profile_data = $user->user_data($user_id, 'f_name', 'l_name', 'email');
 ?>
 <div id="public_profile">
 	<h1><?php echo $profile_data['f_name']?>'s Profile</h1>

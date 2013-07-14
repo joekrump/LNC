@@ -3,8 +3,9 @@
     <div class="inner">
         <div class="profile">
             <?php
-            //checking file uploads
-                if(isset($_FILES['profile_pic'])){
+            if(!empty($user_data['profile_pic'])){
+                echo '<a href="' . $user_data['user_name'] . '"><img src="' . $user_data['profile_pic'] . '" alt="' . $user_data['f_name'] . '"/></a>';
+            } else {
                     if(empty($_FILES['profile_pic']['name'])){
                         echo 'Please choose a file';
                     } else {
@@ -17,7 +18,7 @@
                         //TODO: add in file size limit.
 
                         if(in_array($file_ext, $allowed_formats)){
-                            update_profile_image($session_user_id, $file_temp, $file_ext);
+                            $user->update_profile_image($session_user_id, $file_temp, $file_ext);
                             header('Location' . $current_file);
                         } else {
                             echo "Incorrect file type. You may upload the following formats: \n";
@@ -29,11 +30,7 @@
             <form action="" method="post" enctype="multipart/form-data">
                 <input type="file" name="profile_pic"/> <input type="submit"/>
             </form>
-            <?php
-            } 
-            if(!empty($user_data['profile_pic'])){
-                echo '<a href="' . $user_data['user_name'] . '"><img src="' . $user_data['profile_pic'] . '" alt="' . $user_data['f_name'] . '"/></a>';
-            }
+        <?php    }
         ?>
         </div>
     	<ul>
