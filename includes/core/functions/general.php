@@ -28,11 +28,13 @@ function logged_in_user_redirect(){
 }
 //Strips tags and sql injection from an array of strings.
 function sanitize_array(&$array){
-	$array = htmlentities(strip_tags(mysql_real_escape_string($array)));
+	$core = new Core();
+	$array = htmlentities(strip_tags(mysqli_real_escape_string($core->db, $array)));
 }
 //Strips tags and sql injection from a single string.
 function sanitize($data){
-	return htmlentities(strip_tags(mysql_real_escape_string($data)));
+	$core = new Core();
+	return htmlentities(strip_tags(mysqli_real_escape_string($core->db, $data)));
 }
 
 //Prints out an array with specific styling.

@@ -9,8 +9,9 @@
 
 		if(empty($username) || empty($password)){
 			$errors[] = 'You need to enter a username and password'; //appends a value to array 'errors'
-		} else if (!$user->user_exists($username)){ //user_exists() is a custom created function.
+		} else if (!$user->user_exists($username)){ 
 			$errors[] = 'A user with this username doesn\'t appear to exist, have you registered yet?';
+			$errors[] = 'username: ' . $username;
 		} else if (!$user->user_active($username)){
 			$errors[] = 'You haven\'t activated your account yet.';
 		} else {

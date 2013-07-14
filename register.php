@@ -21,7 +21,7 @@ if(!empty($_POST)){
 			$errors[] = 'Usernames may not contain spaces.';
 		}
 		//check that user doesn't already exist.
-		if(user_exists($_POST['username'])){
+		if($user->user_exists($_POST['username'])){
 			//htmlentities sanitized html code from output content.
 			$errors[] = 'Sorry, \'' . htmlentities($_POST['username']) . '\' is already taken.'; 
 		}
@@ -44,7 +44,7 @@ if(!empty($_POST)){
 			$errors[] = 'A valid email address is required';
 		}
 		//check to see if another user already is using this email address.
-		if(email_exists($_POST['email'])){
+		if($user->email_exists($_POST['email'])){
 			$errors[] = 'This email address is already in use';
 		}
 	}
@@ -64,9 +64,9 @@ if(!empty($_POST)){
 			);
 			if(isset($_GET['r'])){
 				$referral_code = $_GET['r'];
-				register_user($registration_info, $referral_code);
+				$user->register_user($registration_info, $referral_code);
 			} else {
-				register_user($registration_info, 0);				
+				$user->register_user($registration_info, 0);				
 			}
 			header('Location: register.php?success');
 			exit;

@@ -86,6 +86,7 @@ class User {
 	*			 returns false. 
 	********************************************************************/
 	function activate($email_code){
+		$core = new Core();
 		$email_code = mysql_real_escape_string($email_code);
 		$core->query("SELECT COUNT(`user_id`) FROM `users` WHERE `email_code` = '$email_code' AND `active` = 0");
 
@@ -109,9 +110,9 @@ class User {
 	*           an associative array. 
 	********************************************************************/
 	function register_user($registration_info, $referral_code){
+		$core = new Core();
 		array_walk($registration_info, 'sanitize_array');
 		$registration_info['password'] = md5($registration_info['password']);
-		$core = new Core();
 		$fields = '' . implode(' ,', array_keys($registration_info)) . '';
 		$data = '\'' . implode('\',\'', $registration_info) . '\'';
 
@@ -180,10 +181,10 @@ class User {
 	function user_exists($username){
 		$core = new Core();
 		$username = sanitize($username);
-
 		$core->query("SELECT COUNT(`user_id`) as count FROM `users` WHERE `user_name` = '$username'");
 		$result = $core->rows();
-		return ($result[0]['count'] == 1) ? true : false;
+		print_r($result);
+		return ($result[0]['count'] >= 1) ? true : false;
 	}
 
 	/********************************************************************
