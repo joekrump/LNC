@@ -15,8 +15,10 @@
 			echo '<img src="' . $user_data['profile_pic'] . '" alt="' . $user_data['f_name'] . '"/>';
 		}
 	?>
-	<h3>Details:</h3>
-	Preferred Email: <?php echo $profile_data['email']?>
+	<div class="profile-info">
+		<h3>Details:</h3>
+		<p>Preferred Email: <?php echo $profile_data['email']?></p>
+	</div>
 </div>
 
 <?php

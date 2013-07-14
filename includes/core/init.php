@@ -19,7 +19,5 @@ if($user->logged_in()){
 		exit();
 	} 
 	$user->change_user_loggedin_status($session_user_id, 1);
-} else {
-	echo 'not logged in';
-}
+} 
 ?>

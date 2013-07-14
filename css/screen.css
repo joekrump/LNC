@@ -12,7 +12,7 @@ ul {
     margin:0 0 20px 0;
     list-style:none;
 }
-h1, h2 {
+h1, h2, h3 {
     padding:0;
     margin:0 0 20px 0;
     font-weight:normal;
@@ -24,7 +24,7 @@ p {
 /*Anchors*/
 a {
     text-decoration:none;
-    font-size:1.0em;
+    font-size: 16px;
     color:#35a6e6;
     padding:0 0 3px 0;
 }
@@ -57,7 +57,7 @@ body {
     /*background:darkslategray;*/
     background: #535559;
     font-family:'Droid Sans',Tahoma, Arial, sans-serif; 
-    font-size:1.0em;   
+    font-size:16px;   
     color: white;
 }
 /* Menu */
@@ -68,11 +68,11 @@ body {
 }
 #top-menu a{
     color: #fff;
+    font-size: 16px;
 }
 #top-menu li{
     list-style: none;
     float:      left;
-    font-size:  1.0em;
     padding: 18px 14px; /*values might change based on the height of the header*/
 }
 
@@ -231,16 +231,23 @@ footer {
     width: 640px;
 }
 #public_profile img{
+    display: inline-block;
     width: 50%;
-    float: left;
     vertical-align: top;
     margin-right: 10px;
+}
+
+#public_profile .profile-info {
+    display: inline-block; 
+    vertical-align: top;
+    padding: 10px;
 }
 
 /*Chat styling*/
 
 .chat .messages {
     width: 250px;
+    min-height: 300px;
     padding: 10px;
     border: 1px solid white;
     overflow-y: scroll;
@@ -256,9 +263,19 @@ footer {
 
 .chat .entry {
     width: 260px;
-    height: 40px;
+    height: 50px;
     padding: 5px;
     margin-top: 5px;
     font: 1em Arial;
+}
+
+.thumbnail {
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.small-link {
+    color: slategrey;
+    font-size: 12px;
 }
 /* CSS Document */

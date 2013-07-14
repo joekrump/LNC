@@ -2,36 +2,13 @@
     <h2>Hello <?php echo $user_data['f_name']; ?>!</h2>
     <div class="inner">
         <div class="profile">
-            <?php
+        <?php
             if(!empty($user_data['profile_pic'])){
                 echo '<a href="' . $user_data['user_name'] . '"><img src="' . $user_data['profile_pic'] . '" alt="' . $user_data['f_name'] . '"/></a>';
-            } else {
-                    if(empty($_FILES['profile_pic']['name'])){
-                        echo 'Please choose a file';
-                    } else {
-                        $allowed_formats = array('jpg', 'jpeg', 'gif', 'png');
-
-                        $file_name = $_FILES['profile_pic']['name'];
-                        $file_ext  = explode('.', $file_name);
-                        $file_ext = strtolower(end($file_ext)); 
-                        $file_temp = $_FILES['profile_pic']['tmp_name'];//Where the file is temporarily stored
-                        //TODO: add in file size limit.
-
-                        if(in_array($file_ext, $allowed_formats)){
-                            $user->update_profile_image($session_user_id, $file_temp, $file_ext);
-                            header('Location' . $current_file);
-                        } else {
-                            echo "Incorrect file type. You may upload the following formats: \n";
-                            echo implode(', ', $allowed);
-                        }
-
-                    }                
-            ?>
-            <form action="" method="post" enctype="multipart/form-data">
-                <input type="file" name="profile_pic"/> <input type="submit"/>
-            </form>
-        <?php    }
+            } else {           
         ?>
+            <a href="settings.php" class="small-link">Add a profile picture.</a>        
+        <?php } ?>
         </div>
     	<ul>
             <li>

@@ -38,10 +38,40 @@ if(isset($_GET['success'])){
 	} else if (!empty($errors)){
 		echo output_errors($errors);
 	}
+		if(isset($_FILES['profile_pic'])){
+	       $allowed_formats = array('jpg', 'jpeg', 'gif', 'png');
 
+	       $file_name = $_FILES['profile_pic']['name'];
+	       $file_ext  = explode('.', $file_name);
+	       $file_ext = strtolower(end($file_ext)); 
+	       $file_temp = $_FILES['profile_pic']['tmp_name'];//Where the file is temporarily stored
+	       //TODO: add in file size limit.
+	       
+	       if(in_array($file_ext, $allowed_formats)){
+	           $user->update_profile_image($session_user_id, $file_temp, $file_ext);
+	           header('Location:' . $current_file);
+	       } else {
+	           echo "<p class=\"error-list\">Incorrect file type. You may upload the following formats:</p> \n";
+	           echo "<p class=\"error-list\">" . implode(', ', $allowed_formats) . "</p>";
+	       }  
+	       if(empty($_FILES['profile_pic']['name'])){
+	           echo 'Please choose a file';
+	       }           
+	   } 			    	              
 	?>
-	<form action="" method="post">
+	<form action="" method="post" enctype="multipart/form-data">
 		<ul>
+			<li>
+				<?php 
+				if(!empty($user_data['profile_pic'] )){
+					echo '<img src="' . $user_data['profile_pic'] . '" alt="' . $user_data['f_name'] . '" class="thumbnail"/><br />Change Profile Picture:';
+				} else {
+					echo 'Add a profile picture:';
+				}
+				?>			
+				<br />
+				<input type="file" name="profile_pic"/>
+			</li>
 			<li>
 				First name:<br/>
 				<input type="text" name="f_name" value="<?php echo $user_data['f_name']; ?>" autofocus/>
@@ -53,11 +83,14 @@ if(isset($_GET['success'])){
 			<li>
 				Email:<br />
 				<input type="text" name="email" value="<?php echo $user_data['email']; ?>" autofocus/>
+			</li>
+
 			<li>
-				<input type="submit" value="Update"/>
+				<input class="button" type="submit" value="Update"/>
 			</li>
 		</ul>
 	</form>
+	
 <?php 
 }
 include_once('includes/overall/overall_footer.php'); 
